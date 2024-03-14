@@ -9,6 +9,7 @@ combinations_regex = re.compile(r"^([\w+]+)->(\w+)$")
 def parse_grammar_file(grammar_file_path):
     with open_file(grammar_file_path) as content:
         # Split the content by newlines to get a list of lines
+        print("hi")
         lines = content.splitlines()
         parsed_lines = list(map(parse_line, lines))
         actions, combinations = fold_lines(parsed_lines, ({}, {}), 0)
