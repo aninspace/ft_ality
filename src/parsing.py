@@ -1,12 +1,15 @@
+import os
 import re
+import subprocess
 from contextlib import contextmanager
 
 actions_regex = re.compile(r"^(\w)->(\w+)$")
 combinations_regex = re.compile(r"^([\w+]+)->(\w+)$")
 
-def parse_grammar_file(grammar_file):
-    with open_file(grammar_file) as source:
-        lines = source.readlines()
+def parse_grammar_file(grammar_file_path):
+    with open_file(grammar_file_path) as content:
+        # Split the content by newlines to get a list of lines
+        lines = content.splitlines()
         parsed_lines = list(map(parse_line, lines))
         actions, combinations = fold_lines(parsed_lines, ({}, {}), 0)
     return actions, combinations
@@ -44,10 +47,19 @@ def fold_lines(parsed_lines, accumulators, index):
 @contextmanager
 def open_file(file_name):
     try:
-        file = open(file_name, 'r')
-        yield file
+        # Use the appropriate command based on the operating system
+        if os.name == 'posix':
+            cmd = ['cat', file_name]
+        elif os.name == 'nt':  # Windows
+            cmd = ['type', file_name]
+        else:
+            raise OSError("Unsupported operating system")
+
+        # Execute the command and capture the output
+        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # Yield the output as a string
+        yield result.stdout.decode('utf-8')
+    except subprocess.CalledProcessError as e:
+        print(f"Error while reading file: {e}")
     except Exception as e:
-        print(f"Error while opening file: {e}")
-        exit(1)
-    finally:
-        file.close()
+        print(f"An error occurred: {e}")
