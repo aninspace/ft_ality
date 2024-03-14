@@ -1,0 +1,9 @@
+a->ice
+b->milk
+c->cheese
+d->bread
+e->riz
+f->meat
+a+b->ice_cream
+c+d->sandwich
+e+f->dinner

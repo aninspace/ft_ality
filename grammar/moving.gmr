@@ -1,0 +1,8 @@
+w->left
+s->right
+a->up
+d->down
+w+a->go_left_down
+w+a->go_left_up
+a+d->go_up_down
+s+a->go_right_up

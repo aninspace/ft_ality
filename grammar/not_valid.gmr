@@ -1,0 +1,9 @@
+w->Up
+s->Down
+s->Left
+d->Right
+h->Hook
+w+l->Hook_up
+s+q->Hook_down
+d+s->Right_hook
+a+l->Left_hook
